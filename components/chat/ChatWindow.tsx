@@ -66,10 +66,10 @@ export function ChatWindow() {
   }
 
   return (
-    <Card className="overflow-hidden border-border/70 shadow-sm">
+    <Card className="anim-fade-in overflow-hidden border-border/70 shadow-sm">
       <CardContent className="flex h-[75vh] flex-col gap-0 p-0">
         {/* Suggestions */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border/70 bg-card p-3">
+        <div className="anim-fade-in flex flex-wrap items-center gap-2 border-b border-border/70 bg-card p-3">
           <div className="mr-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
             <Sparkles size={14} /> Try:
           </div>
@@ -77,7 +77,7 @@ export function ChatWindow() {
             <button
               key={s}
               onClick={() => handleSuggestion(s)}
-              className="rounded-full border border-border bg-muted px-3 py-1 text-xs hover:bg-muted/80"
+              className="chip rounded-full border border-border bg-muted px-3 py-1 text-xs hover:bg-muted/80"
             >
               {s}
             </button>
@@ -111,7 +111,8 @@ export function ChatWindow() {
               }}
             />
             <Button onClick={handleSend} disabled={sending || input.trim().length === 0} className="h-9 rounded-lg px-3" variant="soft">
-              <Send size={16} />
+              <span className="sr-only">Send</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </Button>
           </div>
         </div>
