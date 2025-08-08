@@ -5,7 +5,7 @@ import { HeartHandshake, Gauge, Sparkles } from "lucide-react"
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl space-y-12">
-      <section className="rounded-2xl border border-border/70 bg-card p-12 shadow-sm">
+      <section className="anim-fade-up card-hover rounded-3xl border border-border/70 bg-card p-12 shadow-sm">
         <div className="space-y-5">
           <h1 className="text-5xl font-semibold leading-tight tracking-tight">
             Meet Prepora — your AI Exam Companion
@@ -16,7 +16,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Link href="/companion">
-              <Button className="h-11 px-6" variant="soft">Open Companion</Button>
+              <Button className="pressable h-11 px-6" variant="soft">Open Companion</Button>
             </Link>
             <a href="#how-it-works" className="text-sm text-muted-foreground underline underline-offset-4">
               How it works
@@ -26,7 +26,7 @@ export default function HomePage() {
       </section>
 
       <section id="how-it-works" className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border/70 bg-card p-6 shadow-sm">
+        <div className="anim-fade-up card-hover rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
           <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
             <HeartHandshake size={18} />
           </div>
@@ -35,7 +35,8 @@ export default function HomePage() {
             Learns your background, schedule, and exam. Feels human, not robotic.
           </p>
         </div>
-        <div className="rounded-xl border border-border/70 bg-card p-6 shadow-sm">
+
+        <div className="anim-fade-up card-hover rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
           <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
             <Gauge size={18} />
           </div>
@@ -44,7 +45,8 @@ export default function HomePage() {
             Daily plans that adapt with progress, mocks, and mood.
           </p>
         </div>
-        <div className="rounded-xl border border-border/70 bg-card p-6 shadow-sm">
+
+        <div className="anim-fade-up card-hover rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
           <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
             <Sparkles size={18} />
           </div>
