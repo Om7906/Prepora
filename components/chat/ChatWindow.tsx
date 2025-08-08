@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { ChatMessage } from "./ChatMessage"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send, Sparkles } from "lucide-react"
+import { TypingDots } from "./TypingDots"
 
 type Message = {
   id: string
@@ -32,44 +32,44 @@ export function ChatWindow() {
   ])
   const [input, setInput] = useState("")
   const [sending, setSending] = useState(false)
+  const [typing, setTyping] = useState(false)
   const bottomRef = useRef<HTMLDivElement | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
+  }, [messages, typing])
 
   function handleSuggestion(text: string) {
     setInput(text)
+    textareaRef.current?.focus()
   }
 
   async function handleSend() {
     const text = input.trim()
     if (!text) return
     setSending(true)
-    const userMsg: Message = {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: text,
-      createdAt: Date.now()
-    }
+    const userMsg: Message = { id: crypto.randomUUID(), role: "user", content: text, createdAt: Date.now() }
     setMessages((m) => [...m, userMsg])
     setInput("")
 
-    // Simple local demo reply (no AI yet)
+    // Simulate assistant typing
+    setTyping(true)
     setTimeout(() => {
       const reply: Message = {
         id: crypto.randomUUID(),
         role: "assistant",
         createdAt: Date.now(),
         content:
-          "Got it. This is a demo chat for now. Next, I’ll remember your profile, check your mood, and generate daily plans.\n\nTry one of these:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
+          "Got it. This is a visual demo for now. Next, I’ll remember your profile, check your mood, and generate daily plans.\n\nTry one of these:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
       }
       setMessages((m) => [...m, reply])
+      setTyping(false)
       setSending(false)
-    }, 400)
+    }, 600)
   }
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       handleSend()
@@ -77,10 +77,10 @@ export function ChatWindow() {
   }
 
   return (
-    <Card className="overflow-hidden">
-      <CardContent className="flex h-[70vh] flex-col gap-4 p-0">
-        {/* Suggestion chips */}
-        <div className="flex flex-wrap items-center gap-2 border-b bg-card/60 p-3 backdrop-blur">
+    <Card className="overflow-hidden border-border/60 shadow-sm">
+      <CardContent className="flex h-[75vh] flex-col gap-0 p-0">
+        {/* Suggestions */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-card/60 p-3 backdrop-blur">
           <div className="mr-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
             <Sparkles size={14} /> Try:
           </div>
@@ -88,7 +88,7 @@ export function ChatWindow() {
             <button
               key={s}
               onClick={() => handleSuggestion(s)}
-              className="rounded-full border bg-white/70 px-3 py-1 text-xs hover:bg-white/90 dark:bg-white/10 dark:hover:bg-white/15"
+              className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs hover:bg-muted/60"
             >
               {s}
             </button>
@@ -100,24 +100,41 @@ export function ChatWindow() {
           {messages.map((m) => (
             <ChatMessage key={m.id} role={m.role} content={m.content} />
           ))}
+          {typing && (
+            <div className="flex w-full justify-start gap-3">
+              <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 text-[11px] font-semibold text-white shadow">
+                P
+              </div>
+              <div className="max-w-[80%] rounded-2xl rounded-bl-none border border-border/60 bg-muted/60 px-4 py-3 text-sm shadow-sm">
+                <TypingDots />
+              </div>
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
 
-        {/* Input bar */}
-        <div className="border-t bg-card/70 p-3 backdrop-blur">
-          <div className="relative flex items-center gap-2 rounded-full border bg-background/80 p-1 pl-4">
-            <Input
-              placeholder="Type your message…"
+        {/* Input */}
+        <div className="border-t border-border/60 bg-card/70 p-3 backdrop-blur">
+          <div className="relative flex items-end gap-2 rounded-xl border border-border/60 bg-background p-2">
+            <textarea
+              ref={textareaRef}
+              placeholder="Type a message...  (Shift+Enter for new line)"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               disabled={sending}
-              className="h-11 rounded-full border-none focus-visible:ring-0"
+              rows={1}
+              className="max-h-40 w-full resize-none bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground"
+              onInput={(e) => {
+                const el = e.currentTarget
+                el.style.height = "auto"
+                el.style.height = `${el.scrollHeight}px`
+              }}
             />
             <Button
               onClick={handleSend}
               disabled={sending || input.trim().length === 0}
-              className="mr-1 h-10 w-10 rounded-full"
+              className="h-9 rounded-lg px-3"
               variant="gradient"
               aria-label="Send"
               title="Send"
