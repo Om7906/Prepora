@@ -9,7 +9,9 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:opacity-90",
         secondary: "bg-muted text-foreground hover:opacity-90",
-        ghost: "hover:bg-muted"
+        ghost: "hover:bg-muted",
+        gradient:
+          "text-white bg-gradient-to-r from-indigo-500 via-indigo-500 to-cyan-400 shadow hover:brightness-110"
       },
       size: {
         default: "h-10 px-4 py-2",
