@@ -5,18 +5,17 @@ export default function HomePage() {
     <div className="mx-auto max-w-3xl space-y-10">
       <section className="rounded-lg border p-8">
         <h1 className="text-3xl font-bold tracking-tight">
-          Meet Prepora — your AI Exam Mentor
+          Meet Prepora — your AI Exam Companion
         </h1>
         <p className="mt-3 text-muted-foreground">
-          Calm when you need care, energetic when you need a push. Built for CAT, GATE, JEE,
-          NEET, SSC, and UPSC.
+          Calm when you need care, energetic when you need a push. Built for CAT, GATE, JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.
         </p>
         <div className="mt-6 flex gap-3">
           <Link
-            href="/mentor"
+            href="/companion"
             className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            Start Mentoring
+            Open Companion
           </Link>
           <a
             href="#how-it-works"
