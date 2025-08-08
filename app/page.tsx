@@ -8,7 +8,7 @@ export default function HomePage() {
           Meet Prepora — your AI Exam Companion
         </h1>
         <p className="mt-3 text-muted-foreground">
-          Calm when you need care, energetic when you need a push. Built for CAT, GATE, JEE Mains/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.
+          Calm when you need care, energetic when you need a push. Built for CAT, GATE, JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.
         </p>
         <div className="mt-6 flex gap-3">
           <Link
