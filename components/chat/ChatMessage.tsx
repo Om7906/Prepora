@@ -12,7 +12,7 @@ export function ChatMessage({ role, content, time }: ChatMessageProps) {
   return (
     <div className={cn("flex w-full gap-3 leading-relaxed", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
-        <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 text-[11px] font-semibold text-white shadow">
+        <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-teal-400 text-[11px] font-semibold text-white shadow">
           P
         </div>
       )}
