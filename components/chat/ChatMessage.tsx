@@ -11,8 +11,9 @@ export function ChatMessage({ role, content, time }: ChatMessageProps) {
 
   return (
     <div className={cn("flex w-full gap-3 leading-relaxed", isUser ? "justify-end" : "justify-start")}>
+      {/* No bold avatars; keep it quiet */}
       {!isUser && (
-        <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-teal-400 text-[11px] font-semibold text-white shadow">
+        <div className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border/70 bg-card text-[10px] font-medium text-muted-foreground">
           P
         </div>
       )}
@@ -21,8 +22,8 @@ export function ChatMessage({ role, content, time }: ChatMessageProps) {
         className={cn(
           "max-w-[80%] rounded-2xl border px-4 py-2 text-sm shadow-sm",
           isUser
-            ? "rounded-br-none border-border/70 bg-background"
-            : "rounded-bl-none border-border/60 bg-muted/60"
+            ? "rounded-br-none border-border/70 bg-card"
+            : "rounded-bl-none border-border/60 bg-muted"
         )}
       >
         <p className="whitespace-pre-line">{content}</p>
@@ -30,7 +31,7 @@ export function ChatMessage({ role, content, time }: ChatMessageProps) {
       </div>
 
       {isUser && (
-        <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-muted text-[11px] font-semibold text-foreground/70">
+        <div className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border/70 bg-card text-[10px] font-medium text-muted-foreground">
           U
         </div>
       )}
