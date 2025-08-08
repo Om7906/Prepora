@@ -26,7 +26,7 @@ export function ChatWindow() {
       id: crypto.randomUUID(),
       role: "assistant",
       content:
-        "Hey! I’m your Prepora companion. Tell me your exam and target date. We’ll build a calm, focused plan together — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE (5 branches), JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
+        "Hey! I’m your Prepora companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE (5 branches), JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
       createdAt: Date.now()
     }
   ])
@@ -60,7 +60,7 @@ export function ChatWindow() {
         role: "assistant",
         createdAt: Date.now(),
         content:
-          "Got it. This is a visual demo for now. Next, I’ll remember your profile, check your mood, and generate daily plans.\n\nTry one of these:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
+          "Got it. This is a visual demo for now. Soon, I’ll remember your profile, check in on mood, and create daily plans.\n\nTry:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
       }
       setMessages((m) => [...m, reply])
       setTyping(false)
@@ -78,8 +78,8 @@ export function ChatWindow() {
   return (
     <Card className="overflow-hidden border-border/60 shadow-sm">
       <CardContent className="flex h-[75vh] flex-col gap-0 p-0">
-        {/* Suggestions */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-card/60 p-3 backdrop-blur">
+        {/* Suggestions — soft pills */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-card p-3">
           <div className="mr-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
             <Sparkles size={14} /> Try:
           </div>
@@ -87,7 +87,7 @@ export function ChatWindow() {
             <button
               key={s}
               onClick={() => handleSuggestion(s)}
-              className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs hover:bg-muted/60"
+              className="rounded-full border border-border bg-muted px-3 py-1 text-xs hover:bg-muted/80"
             >
               {s}
             </button>
@@ -101,10 +101,10 @@ export function ChatWindow() {
           ))}
           {typing && (
             <div className="flex w-full justify-start gap-3">
-              <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-teal-400 text-[11px] font-semibold text-white shadow">
+              <div className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border/70 bg-card text-[10px] font-medium text-muted-foreground">
                 P
               </div>
-              <div className="max-w-[80%] rounded-2xl rounded-bl-none border border-border/60 bg-muted/60 px-4 py-3 text-sm shadow-sm">
+              <div className="max-w-[80%] rounded-2xl rounded-bl-none border border-border/60 bg-muted px-4 py-3 text-sm shadow-sm">
                 <TypingDots />
               </div>
             </div>
@@ -112,12 +112,12 @@ export function ChatWindow() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input */}
-        <div className="border-t border-border/60 bg-card/70 p-3 backdrop-blur">
-          <div className="relative flex items-end gap-2 rounded-xl border border-border/60 bg-background p-2">
+        {/* Input — calm pill bar */}
+        <div className="border-t border-border/60 bg-card p-3">
+          <div className="relative flex items-end gap-2 rounded-xl border border-border bg-background p-2">
             <textarea
               ref={textareaRef}
-              placeholder="Type a message...  (Shift+Enter for new line)"
+              placeholder="Type a message…  (Shift+Enter for new line)"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
@@ -134,7 +134,7 @@ export function ChatWindow() {
               onClick={handleSend}
               disabled={sending || input.trim().length === 0}
               className="h-9 rounded-lg px-3"
-              variant="gradient"
+              variant="secondary"
               aria-label="Send"
               title="Send"
             >
