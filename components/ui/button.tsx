@@ -7,20 +7,21 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:opacity-90",
-        secondary: "bg-muted text-foreground hover:opacity-90",
-        ghost: "hover:bg-muted",
-        gradient:
-          "text-white bg-gradient-to-r from-sky-500 via-sky-500 to-teal-400 shadow hover:brightness-110"
+        /* Primary is gentle, not loud */
+        default: "bg-foreground text-background hover:opacity-95",
+        secondary: "bg-muted text-foreground hover:bg-muted/80 border border-border",
+        ghost: "hover:bg-muted/70",
+        outline: "border border-border bg-transparent hover:bg-muted/60",
+        soft: "bg-muted text-foreground border border-border hover:bg-muted/80" /* use this most */
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-8 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        lg: "h-11 rounded-md px-6",
         icon: "h-10 w-10"
       }
     },
-    defaultVariants: { variant: "default", size: "default" }
+    defaultVariants: { variant: "soft", size: "default" }
   }
 )
 
