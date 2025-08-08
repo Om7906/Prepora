@@ -1,11 +1,11 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Plus_Jakarta_Sans } from "next/font/google"
+import { Manrope } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-const fontSans = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["400","500","600","700"] })
+const fontSans = Manrope({ subsets: ["latin"], weight: ["400","500","600","700","800"] })
 
 export const metadata: Metadata = {
   title: "Prepora — Your AI Exam Companion",
@@ -18,10 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fontSans.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <div className="min-h-screen">
-            <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur">
-              <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
+            <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
+              <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
                 <Link href="/" className="flex items-center gap-2">
                   <img src="/logo.svg" alt="Prepora" className="h-6 w-6" />
                   <span className="text-sm font-semibold tracking-tight">Prepora</span>
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </div>
               </div>
             </header>
-            <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+            <main className="mx-auto max-w-6xl px-5 py-10">{children}</main>
             <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
               © {new Date().getFullYear()} Prepora. All rights reserved.
             </footer>
