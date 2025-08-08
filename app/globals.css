@@ -2,46 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Claude-like Warm Ivory theme */
+/* Warm Ivory core palette (light default) */
 :root {
-  --background: 40 20% 99%;        /* warm ivory */
-  --foreground: 223 25% 14%;       /* soft charcoal */
+  --background: 42 33% 98%;         /* warm ivory */
+  --foreground: 222 28% 12%;        /* charcoal */
   --card: 0 0% 100%;
-  --card-foreground: 223 25% 14%;
-  --muted: 35 28% 96%;             /* warm sand */
-  --muted-foreground: 27 12% 36%;  /* cocoa */
-  --border: 30 14% 88%;            /* sand border */
-  --primary: 28 70% 48%;           /* soft apricot (used sparingly) */
+  --card-foreground: 222 28% 12%;
+  --muted: 40 20% 96%;              /* sand */
+  --muted-foreground: 25 10% 34%;   /* cocoa */
+  --border: 35 16% 90%;
+  --primary: 30 74% 48%;            /* soft amber accent (used sparingly) */
   --primary-foreground: 210 40% 98%;
 }
 
 .dark {
-  --background: 220 18% 9%;        /* warm graphite */
+  --background: 220 22% 9%;         /* warm charcoal */
   --foreground: 210 20% 96%;
-  --card: 220 18% 11%;
+  --card: 220 20% 11%;
   --card-foreground: 210 20% 96%;
-  --muted: 220 14% 13%;
-  --muted-foreground: 28 12% 70%;
+  --muted: 220 14% 14%;
+  --muted-foreground: 28 12% 72%;
   --border: 220 12% 20%;
-  --primary: 28 70% 52%;
+  --primary: 30 74% 52%;
   --primary-foreground: 222 47% 10%;
 }
 
-html, body, :root {
-  height: 100%;
-  color: hsl(var(--foreground));
-}
+html, body, :root { height: 100%; color: hsl(var(--foreground)); }
 
-/* Very subtle warmth; almost flat like Claude */
+/* Premium light background: soft paper + faint grid (very subtle) */
 body {
   background:
-    radial-gradient(700px 400px at 10% -10%, rgba(253, 186, 116, 0.06), transparent 40%),
-    radial-gradient(700px 400px at 90% -10%, rgba(251, 146, 60, 0.04), transparent 45%),
+    radial-gradient(800px 400px at 10% -10%, rgba(253, 186, 116, 0.08), transparent 45%),
+    radial-gradient(700px 350px at 95% -10%, rgba(253, 186, 116, 0.06), transparent 50%),
+    /* paper grain */
+    linear-gradient(transparent, transparent),
+    hsl(var(--background));
+}
+.dark body {
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(253, 186, 116, 0.10), transparent 45%),
+    radial-gradient(800px 400px at 95% -10%, rgba(253, 186, 116, 0.08), transparent 50%),
     hsl(var(--background));
 }
 
-/* Premium polish */
-::selection { background: rgba(253, 186, 116, 0.22); color: inherit; }
+/* subtle ring + polish */
+:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(253,186,116,0.28); border-radius: 10px; }
+::selection { background: rgba(253,186,116,0.22); color: inherit; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 999px; }
