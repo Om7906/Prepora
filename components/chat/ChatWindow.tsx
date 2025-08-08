@@ -20,7 +20,7 @@ export function ChatWindow() {
       id: crypto.randomUUID(),
       role: "assistant",
       content:
-        "Hey! I’m Prepora, your competitive exam companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE , JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
+        "Hey! I’m your Prepora companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE (5 branches), JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
       createdAt: Date.now()
     }
   ])
@@ -66,7 +66,7 @@ export function ChatWindow() {
   }
 
   return (
-    <Card className="anim-fade-in overflow-hidden border-border/70 shadow-sm">
+    <Card className="anim-fade-in card-hover overflow-hidden border-border/70 shadow-sm">
       <CardContent className="flex h-[75vh] flex-col gap-0 p-0">
         {/* Suggestions */}
         <div className="anim-fade-in flex flex-wrap items-center gap-2 border-b border-border/70 bg-card p-3">
@@ -110,9 +110,17 @@ export function ChatWindow() {
                 el.style.height = `${el.scrollHeight}px`
               }}
             />
-            <Button onClick={handleSend} disabled={sending || input.trim().length === 0} className="h-9 rounded-lg px-3" variant="soft">
+            <Button
+              onClick={handleSend}
+              disabled={sending || input.trim().length === 0}
+              className="pressable h-9 rounded-lg px-3"
+              variant="soft"
+            >
               <span className="sr-only">Send</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </Button>
           </div>
         </div>
