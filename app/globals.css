@@ -11,7 +11,7 @@
   --muted: 40 20% 96%;              /* sand */
   --muted-foreground: 25 10% 34%;   /* cocoa */
   --border: 35 16% 90%;
-  --primary: 30 74% 48%;            /* soft amber accent (used sparingly) */
+  --primary: 30 74% 48%;            /* soft amber (used sparingly) */
   --primary-foreground: 210 40% 98%;
 }
 
@@ -29,13 +29,11 @@
 
 html, body, :root { height: 100%; color: hsl(var(--foreground)); }
 
-/* Premium light background: soft paper + faint grid (very subtle) */
+/* Premium light background (very subtle warmth) */
 body {
   background:
     radial-gradient(800px 400px at 10% -10%, rgba(253, 186, 116, 0.08), transparent 45%),
     radial-gradient(700px 350px at 95% -10%, rgba(253, 186, 116, 0.06), transparent 50%),
-    /* paper grain */
-    linear-gradient(transparent, transparent),
     hsl(var(--background));
 }
 .dark body {
@@ -45,9 +43,11 @@ body {
     hsl(var(--background));
 }
 
-/* subtle ring + polish */
+/* Focus + selection polish */
 :focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(253,186,116,0.28); border-radius: 10px; }
 ::selection { background: rgba(253,186,116,0.22); color: inherit; }
+
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 999px; }
@@ -60,7 +60,7 @@ body {
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(6px) scale(0.995); }
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes fade-in {
@@ -69,20 +69,40 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .anim-fade-up { animation: fade-up 300ms var(--ease-out) both; }
-  .anim-fade-in { animation: fade-in 280ms linear both; }
+  .anim-fade-up { animation: fade-up 320ms var(--ease-out) both; }
+  .anim-fade-in { animation: fade-in 300ms linear both; }
 
+  /* Premium hover lift for cards/surfaces */
   .card-hover {
-    transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), background-color 220ms;
+    will-change: transform, box-shadow, background-color, border-color;
+    transition:
+      transform 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out),
+      background-color 220ms ease,
+      border-color 220ms ease;
   }
   .card-hover:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+    transform: translateY(-4px);
+    box-shadow:
+      0 14px 34px rgba(0,0,0,0.07),
+      0 2px 6px rgba(0,0,0,0.04);
+    border-color: hsl(var(--border) / 0.9);
+    background-color: hsl(var(--card) / 0.98);
   }
 
-  .chip { transition: transform 180ms var(--ease-out), background-color 180ms, border-color 180ms; }
+  /* Soft interactive pills/chips */
+  .chip {
+    transition:
+      transform 180ms var(--ease-out),
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease;
+  }
   .chip:hover { transform: translateY(-1px); }
 
-  .pressable { transition: transform 150ms var(--ease-smooth), box-shadow 150ms var(--ease-smooth); }
+  /* Buttons feel pressable */
+  .pressable {
+    transition: transform 150ms var(--ease-smooth), box-shadow 150ms var(--ease-smooth), opacity 150ms;
+  }
   .pressable:active { transform: translateY(1px) scale(0.99); }
 }
