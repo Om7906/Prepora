@@ -53,7 +53,6 @@ export function ChatWindow() {
     setMessages((m) => [...m, userMsg])
     setInput("")
 
-    // Simulate assistant typing
     setTyping(true)
     setTimeout(() => {
       const reply: Message = {
@@ -102,7 +101,7 @@ export function ChatWindow() {
           ))}
           {typing && (
             <div className="flex w-full justify-start gap-3">
-              <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 text-[11px] font-semibold text-white shadow">
+              <div className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-500 to-teal-400 text-[11px] font-semibold text-white shadow">
                 P
               </div>
               <div className="max-w-[80%] rounded-2xl rounded-bl-none border border-border/60 bg-muted/60 px-4 py-3 text-sm shadow-sm">
