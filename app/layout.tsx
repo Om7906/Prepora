@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Prepora — Your AI Exam Companion",
-  description: "A calm, strategic, always-on companion for CAT, GATE, JEE Mains/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
+  description: "A calm, strategic, always-on companion for CAT, GATE, JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
   icons: [{ rel: "icon", url: "/favicon.svg" }]
 }
 
