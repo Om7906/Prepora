@@ -20,7 +20,7 @@ export function ChatWindow() {
       id: crypto.randomUUID(),
       role: "assistant",
       content:
-        "Hey! I’m your Prepora companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE (5 branches), JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
+        "Hey! I’m Prepora, your competitive exam companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE , JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
       createdAt: Date.now()
     }
   ])
