@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import { ChatMessage } from "./ChatMessage"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Send, Sparkles } from "lucide-react"
+import { Send, Sparkles, LogIn } from "lucide-react"
+import { supabase } from "@/lib/supabase/client"
 
 type Message = { id: string; role: "user" | "assistant"; content: string; createdAt: number }
 
@@ -20,14 +21,52 @@ export function ChatWindow() {
       id: crypto.randomUUID(),
       role: "assistant",
       content:
-        "Hey! I’m your Prepora companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE (5 branches), JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
+        "Hey, I'm Prepora, Your AI Exam companion. Tell me your exam and target date. We’ll keep it calm and steady — and I’ll add energy when you need a push.\n\nSupported exams: CAT, GATE, JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
       createdAt: Date.now()
     }
   ])
   const [input, setInput] = useState("")
   const [sending, setSending] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+
+  // Get current user and load messages (last 50)
+  useEffect(() => {
+    let mounted = true
+    ;(async () => {
+      const { data } = await supabase.auth.getUser()
+      const uid = data.user?.id ?? null
+      if (!mounted) return
+      setUserId(uid)
+      if (uid) {
+        const { data: rows, error } = await supabase
+          .from("messages")
+          .select("id, role, content, created_at")
+          .eq("user_id", uid)
+          .order("created_at", { ascending: true })
+          .limit(50)
+        if (!error && rows && rows.length > 0) {
+          const mapped = rows.map((r) => ({
+            id: r.id as string,
+            role: r.role as "user" | "assistant",
+            content: r.content as string,
+            createdAt: new Date(r.created_at as string).getTime()
+          }))
+          // Keep initial greeting only if there were no previous messages
+          setMessages((prev) => (prev.length === 1 ? [prev[0], ...mapped] : mapped))
+        }
+      }
+    })()
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id ?? null)
+    })
+    return () => {
+      mounted = false
+      sub?.subscription.unsubscribe()
+    }
+  }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -38,24 +77,45 @@ export function ChatWindow() {
     textareaRef.current?.focus()
   }
 
+  async function saveMessage(uid: string, role: "user" | "assistant", content: string) {
+    await supabase.from("messages").insert({ user_id: uid, role, content })
+  }
+
   async function handleSend() {
     const text = input.trim()
     if (!text) return
     setSending(true)
-    const userMsg: Message = { id: crypto.randomUUID(), role: "user", content: text, createdAt: Date.now() }
+
+    const userMsg: Message = {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: text,
+      createdAt: Date.now()
+    }
     setMessages((m) => [...m, userMsg])
     setInput("")
-    setTimeout(() => {
-      const reply: Message = {
-        id: crypto.randomUUID(),
-        role: "assistant",
-        createdAt: Date.now(),
-        content:
-          "Got it. This is a visual demo for now. Soon I’ll remember your profile, check in on mood, and create daily plans.\n\nTry:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
-      }
-      setMessages((m) => [...m, reply])
-      setSending(false)
-    }, 500)
+
+    if (userId) {
+      await saveMessage(userId, "user", text)
+    }
+
+    // Demo reply (AI comes in Module 7)
+    const reply: Message = {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      createdAt: Date.now(),
+      content:
+        "Noted. This is a visual demo right now. Soon I’ll remember your profile, check in on mood, and create daily plans.\n\nTry:\n• “Create a 2-hour plan for JEE today.”\n• “I have 60 days for CAT — plan my week.”\n• “I’m stressed — give me a light schedule.”"
+    }
+
+    await new Promise((r) => setTimeout(r, 500))
+    setMessages((m) => [...m, reply])
+
+    if (userId) {
+      await saveMessage(userId, "assistant", reply.content)
+    }
+
+    setSending(false)
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -68,20 +128,31 @@ export function ChatWindow() {
   return (
     <Card className="anim-fade-in card-hover overflow-hidden border-border/70 shadow-sm">
       <CardContent className="flex h-[75vh] flex-col gap-0 p-0">
-        {/* Suggestions */}
-        <div className="anim-fade-in flex flex-wrap items-center gap-2 border-b border-border/70 bg-card p-3">
-          <div className="mr-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
-            <Sparkles size={14} /> Try:
+        {/* Suggestions + signed-in hint */}
+        <div className="anim-fade-in flex flex-wrap items-center justify-between gap-2 border-b border-border/70 bg-card p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="mr-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
+              <Sparkles size={14} /> Try:
+            </div>
+            {suggestions.map((s) => (
+              <button
+                key={s}
+                onClick={() => handleSuggestion(s)}
+                className="chip rounded-full border border-border bg-muted px-3 py-1 text-xs hover:bg-muted/80"
+              >
+                {s}
+              </button>
+            ))}
           </div>
-          {suggestions.map((s) => (
-            <button
-              key={s}
-              onClick={() => handleSuggestion(s)}
-              className="chip rounded-full border border-border bg-muted px-3 py-1 text-xs hover:bg-muted/80"
+          {!userId && (
+            <a
+              href="/login"
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2.5 py-1 text-xs text-muted-foreground hover:bg-muted/80"
+              title="Sign in to save your chats"
             >
-              {s}
-            </button>
-          ))}
+              <LogIn size={14} /> Sign in to save
+            </a>
+          )}
         </div>
 
         {/* Messages */}
@@ -117,10 +188,7 @@ export function ChatWindow() {
               variant="soft"
             >
               <span className="sr-only">Send</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <Send size={16} />
             </Button>
           </div>
         </div>
