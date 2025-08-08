@@ -8,8 +8,8 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Prepora — Your AI Exam Mentor",
-  description: "A calm, strategic, always-on mentor for CAT, GATE, JEE, NEET, SSC, and UPSC.",
+  title: "Prepora — Your AI Exam Companion",
+  description: "A calm, strategic, always-on companion for CAT, GATE, JEE Main/Advanced, NEET, SSC CGL, SSC JE, and UPSC CSE.",
   icons: [{ rel: "icon", url: "/favicon.svg" }]
 }
 
@@ -26,8 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <span className="font-semibold">Prepora</span>
                 </Link>
                 <div className="flex items-center gap-4">
-                  <Link href="/mentor" className="text-sm underline underline-offset-4">
-                    Open Mentor
+                  <Link href="/companion" className="text-sm underline underline-offset-4">
+                    Open Companion
                   </Link>
                   <ThemeToggle />
                 </div>
