@@ -1,0 +1,71 @@
+name: AI PR Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: AI review this PR
+        uses: actions/github-script@v7
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          script: |
+            const pr = context.payload.pull_request
+            if (!pr) { core.setFailed('Not a pull_request event'); return }
+
+            // Get a minimal unified diff between base and head
+            const { execSync } = require('node:child_process')
+            const diff = execSync(`git diff --unified=0 ${pr.base.sha} ${pr.head.sha}`, { encoding: 'utf8' })
+
+            // Prompt for the reviewer
+            const prompt = `
+            You are a senior Next.js + Supabase reviewer for an AI exam companion (Prepora).
+            Review this unified diff and produce specific, actionable comments:
+            - Flag bugs, security issues, RLS/Auth mistakes, env/key leaks.
+            - Check Next.js App Router patterns, streaming, server actions safety.
+            - Check Supabase @supabase/ssr usage, RLS, and client/server split.
+            - DX: missing scripts, inconsistent naming, dead code, TODOs.
+            - Suggest minimal code patches (quick fixes) when possible.
+            Keep it concise, bullet-style, and reference files/lines from the diff.
+            DIFF:
+            ${diff}
+            `
+
+            // Call OpenAI Responses API
+            const body = {
+              model: "gpt-4o-mini",
+              input: prompt,
+              temperature: 0.2
+            }
+
+            const res = await fetch("https://api.openai.com/v1/responses", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(body)
+            })
+
+            const data = await res.json()
+            const reviewText =
+              data.output_text ||
+              data.choices?.[0]?.message?.content ||
+              "No review generated."
+
+            // Post a single comment on the PR
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: reviewText
+            })
