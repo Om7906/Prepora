@@ -1,3 +1,51 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+interface Props {
+  exam: string;
+  year: number | string;
+  sections?: string[];
+}
+
+export default function PillarNav({ exam, year }: Props) {
+  const pathname = usePathname();
+  const base = `/exams/${exam}/${year}`;
+
+  const items = [
+    { href: `${base}`, label: "Overview" },
+    { href: `${base}/miqs`, label: "MIQs" },
+    { href: `${base}/resources`, label: "Resources" },
+    { href: `${base}/motivation`, label: "Motivation" },
+    { href: `${base}/syllabus`, label: "Syllabus" },
+    { href: `${base}/toppers`, label: "Toppers" },
+    { href: `${base}/strategies`, label: "Strategies" },
+    { href: `${base}/study-plans`, label: "Study Plans" },
+  ];
+
+  return (
+    <nav className="flex gap-2 overflow-x-auto py-2">
+      {items.map((it) => {
+        const active = pathname === it.href;
+        return (
+          <Link
+            key={it.href}
+            href={it.href}
+            className={`px-3 py-1 rounded-full border ${
+              active ? "bg-black text-white" : "bg-white"
+            }`}
+          >
+            {it.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
